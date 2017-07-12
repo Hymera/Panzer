@@ -1,0 +1,82 @@
+var tank;
+var bg;
+var frame;
+var grid;
+
+var SCENE_W = 4096;	// 4 x 4
+var SCENE_H = 3584;
+
+var pixelScale = 4;
+var velocity = 8;
+
+function setup() {
+	var canvas = createCanvas(1234, 1080);	// x4 snes resolution 256 x 224 pixels
+	
+	grid = createGrid(pixelScale, SCENE_W, SCENE_H);
+	console.dir(grid);
+	// sharp pixel edges
+	noSmooth();
+	
+	// create a sprite and add the 2 animations
+	tank = createSprite(400, 200, 32, 32);
+	tank.scale = pixelScale;
+	
+	tank.addAnimation("standing", "assets/sprites/panzer_0.png");
+	tank.addAnimation("moving", "assets/sprites/panzer_0.png", "assets/sprites/panzer_1.png");
+	
+	bg = new Group();
+	
+	// create some background for visual reference
+	for(var i = 0; i < 80; i++) {
+		// create a sprite and add the 3 animations
+		var rock = createSprite(random(-width, SCENE_W + width), random(-height, SCENE_H + height), 32, 32);
+		rock.scale = pixelScale;
+		
+		rock.addAnimation("normal", "assets/sprites/wall.png");
+		bg.add(rock);
+	}
+	
+	frame = loadImage("assets/sprites/frame.png");
+}
+
+function draw() {
+	background(255,255,255);  
+	
+	// tank movement
+	tankMovement(velocity, tank);
+	
+	// a camera is created automatically at the beginning
+	// normal zoom
+	camera.zoom = 1;
+	// set the camera position to the tank position
+	camera.position.x = tank.position.x;
+	camera.position.y = tank.position.y;
+	
+	// limit the tank movements
+	if(tank.position.x < 0) {
+		tank.position.x = 0;
+	}
+	if(tank.position.y < 0) {
+		tank.position.y = 0;
+	}
+	if(tank.position.x > SCENE_W) {
+		tank.position.x = SCENE_W;
+	}
+	if(tank.position.y > SCENE_H) {
+		tank.position.y = SCENE_H;
+	}
+	
+	// draw the scene
+	drawGrid(grid); // only for development
+	// rocks first
+	drawSprites(bg);
+	// character on the top
+	drawSprite(tank);	
+	/*
+	I can turn on and off the camera at any point to restore
+	the normal drawing coordinates, the frame will be drawn at 
+	the absolute 0,0 (try to see what happens if you don't turn it off
+	*/
+	camera.off();
+	image(frame, 0, 0);
+}
