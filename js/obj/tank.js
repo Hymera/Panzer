@@ -4,7 +4,10 @@ var pressS = false;
 var pressA = false;
 var pressD = false;
 
-function tankMovement(velocity, tank) {
+var velocityBullet = 16;
+var bullet;
+
+function tankMovement(velocity, tank, SCENE_W, SCENE_H) {
 	// up
 	if(keyWentUp("w") && pressW == true && pressS == false && pressA == false && pressD == false) {
 		pressW = false;
@@ -91,5 +94,31 @@ function tankMovement(velocity, tank) {
 		tank.velocity.x = velocity;
 		tank.rotation = 90;
 		tank.changeAnimation("moving");
+	}
+	
+	// limit the tank movements
+	if(tank.position.x < 0) {
+		tank.position.x = 0;
+	}
+	if(tank.position.y < 0) {
+		tank.position.y = 0;
+	}
+	if(tank.position.x > SCENE_W) {
+		tank.position.x = SCENE_W;
+	}
+	if(tank.position.y > SCENE_H) {
+		tank.position.y = SCENE_H;
+	}
+}
+
+function tankShoot(tank, pixelScale) {
+	// press space
+	if(keyDown("g") {
+		// create a sprite and add animation
+		this.bullet = createSprite(tank.position.x, tank.position.y, 32, 32);
+		this.bullet.scale = pixelScale;
+		this.bullet.velocity.y = velocityBullet;
+		this.bullet.addAnimation("normal", "assets/sprites/bullet.png");
+		this.drawSprite(bullet);
 	}
 }

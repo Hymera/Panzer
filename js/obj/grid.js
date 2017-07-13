@@ -1,5 +1,4 @@
-function createGrid(pixelScale, SCENE_W, SCENE_H)
-{
+function createGrid(pixelScale, SCENE_W, SCENE_H) {
 	var pixel = 32 * pixelScale;
 	var x1 = 0;
 	var y1 = 0 - pixel;
@@ -18,8 +17,7 @@ function createGrid(pixelScale, SCENE_W, SCENE_H)
 	return grid;
 }
 
-function drawGrid(grid)
-{
+function drawGrid(grid) {
 	strokeWeight(2);
 	var YMax = grid.length -1;	// 28
 	var XMax = grid[0].length - 1; // 32

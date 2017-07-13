@@ -13,7 +13,7 @@ function setup() {
 	var canvas = createCanvas(1234, 1080);	// x4 snes resolution 256 x 224 pixels
 	
 	grid = createGrid(pixelScale, SCENE_W, SCENE_H);
-	console.dir(grid);
+//	console.log(grid);
 	// sharp pixel edges
 	noSmooth();
 	
@@ -40,11 +40,12 @@ function setup() {
 }
 
 function draw() {
-	background(255,255,255);  
+	background(255,255,255);
 	
 	// tank movement
-	tankMovement(velocity, tank);
-	
+	tankMovement(velocity, tank, SCENE_W, SCENE_H);
+	// tank shoot
+	tankShoot(tank, pixelScale);
 	// a camera is created automatically at the beginning
 	// normal zoom
 	camera.zoom = 1;
@@ -52,26 +53,12 @@ function draw() {
 	camera.position.x = tank.position.x;
 	camera.position.y = tank.position.y;
 	
-	// limit the tank movements
-	if(tank.position.x < 0) {
-		tank.position.x = 0;
-	}
-	if(tank.position.y < 0) {
-		tank.position.y = 0;
-	}
-	if(tank.position.x > SCENE_W) {
-		tank.position.x = SCENE_W;
-	}
-	if(tank.position.y > SCENE_H) {
-		tank.position.y = SCENE_H;
-	}
-	
 	// draw the scene
 	drawGrid(grid); // only for development
 	// rocks first
 	drawSprites(bg);
 	// character on the top
-	drawSprite(tank);	
+	drawSprite(tank);
 	/*
 	I can turn on and off the camera at any point to restore
 	the normal drawing coordinates, the frame will be drawn at 

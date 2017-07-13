@@ -3,5 +3,7 @@ Panzer 0.0.1 Readme
 
 ==README PANZER==
 
-write readme.
+Work in progress.
+
+Write readme.
 
