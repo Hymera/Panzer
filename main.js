@@ -1,4 +1,5 @@
 var tank;
+var bullet;
 var bg;
 var frame;
 var grid;
@@ -8,6 +9,7 @@ var SCENE_H = 3584;
 
 var pixelScale = 4;
 var velocity = 8;
+var pressSpace = false;
 
 function setup() {
 	var canvas = createCanvas(1234, 1080);	// x4 snes resolution 256 x 224 pixels
@@ -18,7 +20,9 @@ function setup() {
 	noSmooth();
 	
 	// create a sprite and add the 2 animations
-	tank = createSprite(400, 200, 32, 32);
+	Tank.prototype = createSprite(400, 200, 32, 32);
+	tank = new Tank();
+	
 	tank.scale = pixelScale;
 	
 	tank.addAnimation("standing", "assets/sprites/panzer_0.png");
@@ -43,9 +47,10 @@ function draw() {
 	background(255,255,255);
 	
 	// tank movement
-	tankMovement(velocity, tank, SCENE_W, SCENE_H);
+	tank.tankMovement(velocity, SCENE_W, SCENE_H);
 	// tank shoot
-	tankShoot(tank, pixelScale);
+	bullet = tank.tankShoot(velocity, pixelScale);
+	
 	// a camera is created automatically at the beginning
 	// normal zoom
 	camera.zoom = 1;
@@ -57,6 +62,11 @@ function draw() {
 	drawGrid(grid); // only for development
 	// rocks first
 	drawSprites(bg);
+	// draw bullets if fired
+	
+	if(bullet != null) {
+		drawSprite(bullet);
+	}
 	// character on the top
 	drawSprite(tank);
 	/*
