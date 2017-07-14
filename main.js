@@ -25,7 +25,7 @@ function setup() {
 	bg = new Group();
 	
 	// create some background for visual reference
-	for(var i = 0; i < 80; i++) {
+	for (var i = 0; i < 80; i++) {
 		// create a sprite and add the 3 animations
 		var rock = createSprite(random(-width, SCENE_W + width), random(-height, SCENE_H + height), 32, 32);
 		rock.scale = pixelScale;
@@ -56,7 +56,7 @@ function draw() {
 	drawSprites(bg);
 	// draw bullets if fired
 	bullet = tank.getBullet();	
-	if(bullet != false) {
+	if (bullet != false) {
 		drawSprite(bullet);
 	}
 	// character on the top
@@ -73,4 +73,10 @@ function draw() {
 
 function update() {
 	tank.update();
+	
+	// update bullets if fired
+	bullet = tank.getBullet();	
+	if (bullet != false) {
+		bullet.update();
+	}
 }

@@ -24,7 +24,7 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 	
 	this.tankMovement = function tankMovement() {
 		// up
-		if(keyWentUp("w") && this.pressW == true && this.pressS == false && this.pressA == false && this.pressD == false) {
+		if (keyWentUp("w") && this.pressW == true && this.pressS == false && this.pressA == false && this.pressD == false) {
 			this.pressW = false;
 			this.pressS = false;
 			this.pressA = false;
@@ -34,7 +34,7 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 			this.rotation = 0;
 			this.changeAnimation("standing");
 		}
-		if(keyDown("w") && this.pressW == false && this.pressS == false && this.pressA == false && this.pressD == false) {
+		if (keyDown("w") && this.pressW == false && this.pressS == false && this.pressA == false && this.pressD == false) {
 			this.pressW = true;
 			this.pressS = false;
 			this.pressA = false;
@@ -47,7 +47,7 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 		}
 		
 		// down
-		if(keyWentUp("s") && this.pressW == false && this.pressS == true && this.pressA == false && this.pressD == false) {
+		if (keyWentUp("s") && this.pressW == false && this.pressS == true && this.pressA == false && this.pressD == false) {
 			this.pressW = false;
 			this.pressS = false;
 			this.pressA = false;
@@ -57,7 +57,7 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 			this.rotation = 180;
 			this.changeAnimation("standing");
 		}
-		if(keyDown("s") && this.pressW == false && this.pressS == false && this.pressA == false && this.pressD == false) {
+		if (keyDown("s") && this.pressW == false && this.pressS == false && this.pressA == false && this.pressD == false) {
 			this.pressW = false;
 			this.pressS = true;
 			this.pressA = false;
@@ -70,7 +70,7 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 		}
 		
 		// left
-		if(keyWentUp("a") && this.pressW == false && this.pressS == false && this.pressA == true && this.pressD == false) {
+		if (keyWentUp("a") && this.pressW == false && this.pressS == false && this.pressA == true && this.pressD == false) {
 			this.pressW = false;
 			this.pressS = false;
 			this.pressA = false;
@@ -80,7 +80,7 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 			this.rotation = 270;
 			this.changeAnimation("standing");
 		}
-		if(keyDown("a") && this.pressW == false && this.pressS == false && this.pressA == false && this.pressD == false) {
+		if (keyDown("a") && this.pressW == false && this.pressS == false && this.pressA == false && this.pressD == false) {
 			this.pressW = false;
 			this.pressS = false;
 			this.pressA = true;
@@ -93,7 +93,7 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 		}
 		
 		// right
-		if(keyWentUp("d") && this.pressW == false && this.pressS == false && this.pressA == false && this.pressD == true) {
+		if (keyWentUp("d") && this.pressW == false && this.pressS == false && this.pressA == false && this.pressD == true) {
 			this.pressW = false;
 			this.pressS = false;
 			this.pressA = false;
@@ -103,7 +103,7 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 			this.rotation = 90;
 			this.changeAnimation("standing");
 		}
-		if(keyDown("d") && this.pressW == false && this.pressS == false && this.pressA == false && this.pressD == false) {
+		if (keyDown("d") && this.pressW == false && this.pressS == false && this.pressA == false && this.pressD == false) {
 			this.pressW = false;
 			this.pressS = false;
 			this.pressA = false;
@@ -116,36 +116,35 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 		}
 		
 		// limit the tank movements
-		if(this.position.x < 0) {
+		if (this.position.x < 0) {
 			this.position.x = 0;
 		}
-		if(this.position.y < 0) {
+		if (this.position.y < 0) {
 			this.position.y = 0;
 		}
-		if(this.position.x > this.SCENE_W) {
+		if (this.position.x > this.SCENE_W) {
 			this.position.x = this.SCENE_W;
 		}
-		if(this.position.y > this.SCENE_H) {
+		if (this.position.y > this.SCENE_H) {
 			this.position.y = this.SCENE_H;
 		}
 	}
 	
 	this.tankShoot = function tankShoot() {
 		// press space
-		if(keyWentUp("space") && this.pressSpace == true) {
+		if (keyWentUp("space") && this.pressSpace == true) {
 			this.pressSpace = false;
 		}
-		if(keyDown("space") && this.pressSpace == false) {
+		if (keyDown("space") && this.pressSpace == false) {
 			this.pressSpace = true;
 			// create a bullet
 			Bullet.prototype = createSprite(this.position.x, this.position.y, 32, 32);
-			var direction = 0;
 			this.bullet = new Bullet(this.direction, this.pixelScale, this.SCENE_W, this.SCENE_H);
 		}
 	}
 	
 	this.getBullet = function getBullet() {
-		if(this.bullet != null) {
+		if (this.bullet != null) {
 			return this.bullet;
 		} else {
 			return false;

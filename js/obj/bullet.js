@@ -32,4 +32,24 @@ function Bullet(direction, pixelScale, SCENE_W, SCENE_H) {
 		this.velocity.x = this.velocityObj;
 		this.rotation = 90;
 	}
+	
+	this.update = function update() {
+		// limit the bullet movements
+		if (this.position.x < 0) {
+			this.position.x = 0;
+			
+		}
+		if (this.position.y < 0) {
+			this.position.y = 0;
+			
+		}
+		if (this.position.x > this.SCENE_W) {
+			this.position.x = this.SCENE_W;
+			
+		}
+		if (this.position.y > this.SCENE_H) {
+			this.position.y = this.SCENE_H;
+			
+		}
+	}
 }
