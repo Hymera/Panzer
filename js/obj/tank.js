@@ -10,8 +10,10 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 	this.SCENE_H = SCENE_H;
 	this.velocityObj = 8;
 	this.pixelScale = pixelScale;
-	this.bullet = null;
+	this.bullets = [];
 	this.direction = 0;
+	this.life = 1;
+	this.timeSave = 0;
 	
 	this.scale = pixelScale;
 	this.addAnimation("standing", "assets/sprites/panzer_0.png");
@@ -135,19 +137,37 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 		if (keyWentUp("space") && this.pressSpace == true) {
 			this.pressSpace = false;
 		}
-		if (keyDown("space") && this.pressSpace == false) {
+		if (keyDown("space") && this.pressSpace == false && Math.round(new Date().getTime()/1000) >= this.timeSave) {
 			this.pressSpace = true;
+			this.timeSave = Math.round(new Date().getTime()/1000) + 3; // next shoot after 3 seconds
 			// create a bullet
-			Bullet.prototype = createSprite(this.position.x, this.position.y, 32, 32);
-			this.bullet = new Bullet(this.direction, this.pixelScale, this.SCENE_W, this.SCENE_H);
+			Bullet.prototype = createSprite(this.position.x, this.position.y, 8, 8);
+			this.bullets.push(new Bullet(this.direction, this.pixelScale, this.SCENE_W, this.SCENE_H));
+		}
+		// delete dead bullets
+		if (this.bullets.length > 0) {
+			for (var i = 0; i < this.bullets.length; i++) {
+				var life = this.bullets[i].getLife();
+				if (life == 0) {
+					this.bullets.splice(i, 1);
+				}
+			}
 		}
 	}
 	
-	this.getBullet = function getBullet() {
-		if (this.bullet != null) {
-			return this.bullet;
+	this.getBullets = function getBullets() {
+		if (this.bullets.length > 0) {
+			return this.bullets;
 		} else {
 			return false;
 		}
+	}
+	
+	this.getLife = function getLife() {
+		return this.life;
+	}
+	
+	this.setLife = function setLife(life) {
+		this.life = life;
 	}
 }

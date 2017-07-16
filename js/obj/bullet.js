@@ -1,9 +1,10 @@
 function Bullet(direction, pixelScale, SCENE_W, SCENE_H) {
-	this.direction = direction;
 	this.SCENE_W = SCENE_W;
 	this.SCENE_H = SCENE_H;
 	this.velocityObj = 16;
 	this.pixelScale = pixelScale;
+	this.direction = direction;
+	this.life = 1;
 	
 	this.scale = pixelScale;
 	this.addAnimation("normal", "assets/sprites/bullet.png");
@@ -37,19 +38,27 @@ function Bullet(direction, pixelScale, SCENE_W, SCENE_H) {
 		// limit the bullet movements
 		if (this.position.x < 0) {
 			this.position.x = 0;
-			
+			this.life = 0;
 		}
 		if (this.position.y < 0) {
 			this.position.y = 0;
-			
+			this.life = 0;
 		}
 		if (this.position.x > this.SCENE_W) {
 			this.position.x = this.SCENE_W;
-			
+			this.life = 0;
 		}
 		if (this.position.y > this.SCENE_H) {
 			this.position.y = this.SCENE_H;
-			
+			this.life = 0;
 		}
+	}
+	
+	this.getLife = function getLife() {
+		return this.life;
+	}
+	
+	this.setLife = function setLife(life) {
+		this.life = life;
 	}
 }

@@ -1,7 +1,8 @@
 var tank;
-var bullet;
-var bg;
+var bullets = [];
+var walls = [];
 var frame;
+var collision;
 
 var grid; // development
 
@@ -11,6 +12,7 @@ var SCENE_H = 3584;
 var pixelScale = 4;
 
 function setup() {
+	collision = new Collision(pixelScale, SCENE_W, SCENE_H);
 	var canvas = createCanvas(1234, 1080);	// x4 snes resolution 256 x 224 pixels
 	
 	grid = createGrid(pixelScale, SCENE_W, SCENE_H); // development
@@ -21,17 +23,12 @@ function setup() {
 	// create a tank
 	Tank.prototype = createSprite(SCENE_W / 2, SCENE_H / 2, 32, 32);
 	tank = new Tank(pixelScale, SCENE_W, SCENE_H);
-	
-	bg = new Group();
-	
+		
 	// create some background for visual reference
 	for (var i = 0; i < 80; i++) {
 		// create a sprite and add the 3 animations
-		var rock = createSprite(random(-width, SCENE_W + width), random(-height, SCENE_H + height), 32, 32);
-		rock.scale = pixelScale;
-		
-		rock.addAnimation("normal", "assets/sprites/wall.png");
-		bg.add(rock);
+		Wall.prototype = createSprite(random(-width, SCENE_W + width), random(-height, SCENE_H + height), 32, 32);
+		walls.push(new Wall(pixelScale, SCENE_W, SCENE_H));
 	}
 	
 	frame = loadImage("assets/sprites/frame.png");
@@ -52,12 +49,18 @@ function draw() {
 	
 	// draw the scene
 	drawGrid(grid); // development
-	// rocks first
-	drawSprites(bg);
+	// walls first
+	if (walls.length > 0) {
+		for (var i = 0; i < walls.length; i++) {
+			drawSprite(walls[i]);
+		}
+	}
 	// draw bullets if fired
-	bullet = tank.getBullet();	
-	if (bullet != false) {
-		drawSprite(bullet);
+	bullets = tank.getBullets();	
+	if (bullets != false) {
+		for (var i = 0; i < bullets.length; i++) {
+			drawSprite(bullets[i]);
+		}
 	}
 	// character on the top
 	drawSprite(tank);
@@ -72,11 +75,33 @@ function draw() {
 }
 
 function update() {
-	tank.update();
-	
+	// update walls
+	if (walls.length > 0) {
+		for (var i = 0; i < walls.length; i++) {
+			walls[i].update();
+		}
+	}
 	// update bullets if fired
-	bullet = tank.getBullet();	
-	if (bullet != false) {
-		bullet.update();
+	bullets = tank.getBullets();
+	if (bullets != false) {
+		for (var i = 0; i < this.bullets.length; i++) {
+			bullets[i].update();
+		}
+	}
+	// update tank
+	tank.update(bullets, walls);
+	
+	// at last update collision
+	collision.update();
+	
+	//delete dead objects
+	// walls
+	if (walls.length > 0) {
+		for (var i = 0; i < walls.length; i++) {
+			var life = walls[i].getLife();
+			if (life == 0) {
+				walls.splice(i, 1);
+			}
+		}
 	}
 }
