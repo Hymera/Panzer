@@ -12,7 +12,7 @@ var SCENE_H = 3584;
 var pixelScale = 4;
 
 function setup() {
-	collision = new Collision(pixelScale, SCENE_W, SCENE_H);
+	collision = new Collision();
 	var canvas = createCanvas(1234, 1080);	// x4 snes resolution 256 x 224 pixels
 	
 	grid = createGrid(pixelScale, SCENE_W, SCENE_H); // development
@@ -50,14 +50,13 @@ function draw() {
 	// draw the scene
 	drawGrid(grid); // development
 	// walls first
-	if (walls.length > 0) {
+	if (walls != null && walls.length > 0) {
 		for (var i = 0; i < walls.length; i++) {
 			drawSprite(walls[i]);
 		}
 	}
 	// draw bullets if fired
-	bullets = tank.getBullets();	
-	if (bullets != false) {
+	if (bullets != null && bullets.length > 0) {
 		for (var i = 0; i < bullets.length; i++) {
 			drawSprite(bullets[i]);
 		}
@@ -75,33 +74,15 @@ function draw() {
 }
 
 function update() {
-	// update walls
-	if (walls.length > 0) {
-		for (var i = 0; i < walls.length; i++) {
-			walls[i].update();
-		}
-	}
 	// update bullets if fired
-	bullets = tank.getBullets();
-	if (bullets != false) {
+	if (bullets != null && bullets.length > 0) {
 		for (var i = 0; i < this.bullets.length; i++) {
 			bullets[i].update();
 		}
 	}
 	// update tank
-	tank.update(bullets, walls);
+	tank.update();
 	
-	// at last update collision
+	// at last update collision and delete objects
 	collision.update();
-	
-	//delete dead objects
-	// walls
-	if (walls.length > 0) {
-		for (var i = 0; i < walls.length; i++) {
-			var life = walls[i].getLife();
-			if (life == 0) {
-				walls.splice(i, 1);
-			}
-		}
-	}
 }
