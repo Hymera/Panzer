@@ -34,7 +34,15 @@ function Collision() {
 			}
 		}
 		// tank collide walls
-		
+		if (walls != null && walls.length > 0) {
+			for (var i = 0; i < walls.length; i++) {
+				// tank overlap wall
+				if (tank.overlap(walls[i])) {
+					tank.collide(walls[i]);
+					break;
+				}
+			}
+		}
 		// enemy collide walls
 		
 		// tank collide enemy
