@@ -6,6 +6,7 @@ function Wall(pixelScale, SCENE_W, SCENE_H) {
 	
 	this.scale = pixelScale;
 	this.addAnimation("normal", "assets/sprites/wall.png");
+	this.immovable = true;
 	
 	this.getLife = function getLife() {
 		return this.life;

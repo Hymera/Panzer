@@ -11,6 +11,10 @@ var SCENE_H = 3584;
 
 var pixelScale = 4;
 
+var pixel = 32 * pixelScale;
+var wallNumberH = SCENE_W / pixel - 4; // y
+var wallNumberV = SCENE_H / pixel + 4; // x
+
 function setup() {
 	collision = new Collision();
 	var canvas = createCanvas(1234, 1080);	// x4 snes resolution 256 x 224 pixels
@@ -24,11 +28,14 @@ function setup() {
 	Tank.prototype = createSprite(SCENE_W / 2, SCENE_H / 2, 32, 32);
 	tank = new Tank(pixelScale, SCENE_W, SCENE_H);
 		
-	// create some background for visual reference
-	for (var i = 0; i < 80; i++) {
-		// create a sprite and add the 3 animations
-		Wall.prototype = createSprite(random(-width, SCENE_W + width), random(-height, SCENE_H + height), 32, 32);
-		walls.push(new Wall(pixelScale, SCENE_W, SCENE_H));
+	// create walls
+	for (var i = 0; i <= wallNumberH; i++) {
+		for (var j = 0; j <= wallNumberV; j++) {
+			if(i % 4 == 0 && j % 4 == 0) {
+				Wall.prototype = createSprite(i * pixel, j * pixel, 32, 32);
+				walls.push(new Wall(pixelScale, SCENE_W, SCENE_H));
+			}
+		}
 	}
 	
 	frame = loadImage("assets/sprites/frame.png");
