@@ -3,6 +3,7 @@ var bullets = [];
 var walls = [];
 var frame;
 var collision;
+var hud;
 
 var grid; // development
 
@@ -17,6 +18,7 @@ var wallNumberV = SCENE_H / pixel + 4; // x
 
 function setup() {
 	collision = new Collision();
+	hud = new Hud();
 	var canvas = createCanvas(1234, 1080);	// x4 snes resolution 256 x 224 pixels
 	
 	grid = createGrid(pixelScale, SCENE_W, SCENE_H); // development
@@ -92,4 +94,7 @@ function update() {
 	
 	// at last update collision and delete objects
 	collision.update();
+	
+	// update hud
+	hud.update();
 }
