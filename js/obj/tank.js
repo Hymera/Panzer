@@ -12,7 +12,7 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 	this.pixelScale = pixelScale;
 	this.direction = 0;
 	this.life = 1;
-	this.timeSave = 0;	// shooting pause
+	this.reloadeTime = 0;	// shooting pause
 	
 	this.scale = pixelScale;
 	this.addAnimation("standing", "assets/sprites/panzer_0.png");
@@ -136,9 +136,9 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 		if (keyWentUp("f") && this.pressF == true) {
 			this.pressF = false;
 		}
-		if (keyDown("f") && this.pressF == false && Math.round(new Date().getTime()/1000) >= this.timeSave) {
+		if (keyDown("f") && this.pressF == false && Math.round(new Date().getTime()/1000) >= this.reloadeTime) {
 			this.pressF = true;
-			this.timeSave = Math.round(new Date().getTime()/1000) + 3; // next shoot after 3 seconds
+			this.reloadeTime = Math.round(new Date().getTime()/1000) + 3; // next shoot after 3 seconds
 			// create a bullet
 			Bullet.prototype = createSprite(this.position.x, this.position.y, 8, 8);
 			bullets.push(new Bullet(this.direction, this.pixelScale, this.SCENE_W, this.SCENE_H));

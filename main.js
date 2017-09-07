@@ -79,6 +79,7 @@ function draw() {
 	the absolute 0,0 (try to see what happens if you don't turn it off
 	*/
 	camera.off();
+	hud.draw();
 	image(frame, 0, 0);
 }
 
