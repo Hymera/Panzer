@@ -1,7 +1,7 @@
 function Collision() {
 	
 	this.update = function update() {
-		// bullets collide walls
+		// bullets collide walls and boundaries
 		if (bullets != null && bullets.length > 0) {
 			if (walls != null && walls.length > 0) {
 				for (var i = 0; i < bullets.length; i++) {
@@ -9,10 +9,12 @@ function Collision() {
 						// bullet overlap wall
 						if (bullets[i].overlap(walls[j])) {
 							var lifeB = bullets[i].getLife();
-							bullets[i].setLife(lifeB--);
+							lifeB = lifeB - 1;
+							bullets[i].setLife(lifeB);
 							
 							var lifeW = walls[j].getLife();
-							walls[j].setLife(lifeW--);
+							lifeW = lifeW - 1;
+							walls[j].setLife(lifeW);
 							
 							// delete dead bullet and wall					
 							if (lifeB <= 0) {
@@ -23,10 +25,25 @@ function Collision() {
 							}
 							break;
 						}
-						// delete bullet when hit map border
-						var lifeB = bullets[i].getLife();
-						if (lifeB <= 0) {
-							bullets.splice(i, 1);
+					}
+				}
+			}
+		}
+		// bullets collide boundaries
+		if (bullets != null && bullets.length > 0) {
+			if (boundaries != null && boundaries.length > 0) {
+				for (var i = 0; i < bullets.length; i++) {
+					for (var j = 0; j < boundaries.length; j++) {
+						// bullet overlap boundaries
+						if (bullets[i].overlap(boundaries[j])) {
+							var lifeB = bullets[i].getLife();
+							lifeB = lifeB - 1;
+							bullets[i].setLife(lifeB);
+							
+							// delete dead bullet			
+							if (lifeB <= 0) {
+								bullets.splice(i, 1);
+							}
 							break;
 						}
 					}
@@ -39,11 +56,21 @@ function Collision() {
 				// tank overlap wall
 				if (tank.overlap(walls[i])) {
 					tank.collide(walls[i]);
-					break;
 				}
 			}
 		}
 		// enemy collide walls
+		
+		// tank collide boundaries
+		if (boundaries != null && boundaries.length > 0) {
+			for (var i = 0; i < boundaries.length; i++) {
+				// tank overlap boundary
+				if (tank.overlap(boundaries[i])) {
+					tank.collide(boundaries[i]);
+				}
+			}
+		}
+		// enemy collide boundaries
 		
 		// tank collide enemy
 		
@@ -51,5 +78,6 @@ function Collision() {
 		
 		// enemy collide bullets
 		
+		// bullet collide bullet
 	}
 }

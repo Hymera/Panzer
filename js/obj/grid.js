@@ -7,7 +7,7 @@ function createGrid(pixelScale, SCENE_W, SCENE_H) {
 	var numberH = SCENE_W / pixel - 4; // y
 	var numberV = SCENE_H / pixel + 4; // x
 	var grid = createArray(numberH + 1, numberV + 1);
-	
+		
 	for (var i = 0; i <= numberH; i++) {
 		for (var j = 0; j <= numberV; j++) {
 			grid[i][j] = j * pixel;

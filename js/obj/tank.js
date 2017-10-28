@@ -13,14 +13,18 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 	this.direction = 0;
 	this.life = 1;
 	this.reloadeTime = 0;	// shooting pause
+	this.oldPositionX = this.position.x;
+	this.oldPositionY = this.position.y;
 	
 	this.scale = pixelScale;
 	this.addAnimation("standing", "assets/sprites/panzer_0.png");
 	this.addAnimation("moving", "assets/sprites/panzer_0.png", "assets/sprites/panzer_1.png");
+	this.addAnimation("shooting", "assets/sprites/panzer_2.png");
 	
 	this.update = function update() {
 		this.tankMovement();
 		this.tankShoot();
+		this.tankPath();
 	}
 	
 	this.tankMovement = function tankMovement() {
@@ -135,16 +139,41 @@ function Tank(pixelScale, SCENE_W, SCENE_H) {
 		// press f = shoot
 		if (keyWentUp("f") && this.pressF == true) {
 			this.pressF = false;
+			// shoot animation
+			if (this.pressW == true || this.pressS == true || this.pressA == true || this.pressD == true || this.pressF == true) {
+				this.changeAnimation("moving");
+			} else {
+				this.changeAnimation("standing");
+			}
 		}
 		if (keyDown("f") && this.pressF == false && Math.round(new Date().getTime()/1000) >= this.reloadeTime) {
 			this.pressF = true;
 			this.reloadeTime = Math.round(new Date().getTime()/1000) + 3; // next shoot after 3 seconds
+			// shoot animation
+			this.changeAnimation("shooting");
 			// create a bullet
 			Bullet.prototype = createSprite(this.position.x, this.position.y, 8, 8);
 			bullets.push(new Bullet(this.direction, this.pixelScale, this.SCENE_W, this.SCENE_H));
 		}
 	}
+	
+	this.tankPath = function tankPath() {
+		var diffX = this.oldPositionX - this.position.x;
+		var diffY = this.oldPositionY - this.position.y;
 		
+		if (diffX >= 24 || diffX <= -24 || diffY >= 24 || diffY <= -24) { //24
+			this.oldPositionX = this.position.x;
+			this.oldPositionY = this.position.y;
+			Path.prototype = createSprite(this.position.x, this.position.y, 32, 32);
+			paths.push(new Path(this.direction, this.pixelScale, this.SCENE_W, this.SCENE_H));
+		} else if (paths.length <= 32) {
+			
+		} else {
+			var out = paths.splice(0, 1);
+			out = null;
+		}
+	}
+	
 	this.getLife = function getLife() {
 		return this.life;
 	}
